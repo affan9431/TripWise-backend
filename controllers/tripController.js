@@ -62,6 +62,18 @@ exports.exploreTrips = async (req, res, next) => {
     console.log("Category", category);
     console.log("Trip Style", tripstyle);
     console.log("Budget", budget);
+    const trips = await Trip.find({
+      $and: [
+        { category: { $in: category.split(",") } },
+        { tripStyle: { $in: tripstyle.split(",") } },
+        { estimatedCost: { $lte: Number(budget) } },
+      ],
+    });
+    res.status(200).json({
+      status: "Success",
+      message: "Explore Trips Successfully",
+      data: trips,
+    });
   } catch (error) {
     console.log(error);
     return next(new AppError("Explore Trips Error!", 404));
