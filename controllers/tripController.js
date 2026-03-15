@@ -43,3 +43,19 @@ exports.getAllTrips = async (req, res, next) => {
     return next(new AppError("Get All Trips Error!", 404));
   }
 };
+
+exports.threeRandomTrips = async (req, res, next) => {
+  try {
+    const trips = await Trip.aggregate([{ $sample: { size: 3 } }]);
+    res
+      .status(200)
+      .json({
+        status: "Success",
+        message: "Get Three Random Trips Successfully",
+        data: trips,
+      });
+  } catch (error) {
+    console.log(error);
+    return next(new AppError("Get Three Random Trips Error!", 404));
+  }
+};

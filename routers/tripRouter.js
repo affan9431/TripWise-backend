@@ -5,5 +5,6 @@ const routes = express.Router();
 
 routes.get("/", tripController.getAllTrips);
 routes.get("/filterTrips", tripController.getFilterTrips);
+routes.get("/threeRandomTrips", tripController.threeRandomTrips);
 
 module.exports = routes;
