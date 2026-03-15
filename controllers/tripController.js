@@ -30,14 +30,12 @@ exports.getFilterTrips = async (req, res, next) => {
 exports.getAllTrips = async (req, res, next) => {
   try {
     const trips = await Trip.find();
-    res
-      .status(200)
-      .json({
-        status: "Success",
-        message: "Get All Trips Successfully",
-        length: trips.length,
-        data: trips,
-      });
+    res.status(200).json({
+      status: "Success",
+      message: "Get All Trips Successfully",
+      length: trips.length,
+      data: trips,
+    });
   } catch (error) {
     console.log(error);
     return next(new AppError("Get All Trips Error!", 404));
@@ -47,15 +45,25 @@ exports.getAllTrips = async (req, res, next) => {
 exports.threeRandomTrips = async (req, res, next) => {
   try {
     const trips = await Trip.aggregate([{ $sample: { size: 3 } }]);
-    res
-      .status(200)
-      .json({
-        status: "Success",
-        message: "Get Three Random Trips Successfully",
-        data: trips,
-      });
+    res.status(200).json({
+      status: "Success",
+      message: "Get Three Random Trips Successfully",
+      data: trips,
+    });
   } catch (error) {
     console.log(error);
     return next(new AppError("Get Three Random Trips Error!", 404));
+  }
+};
+
+exports.exploreTrips = async (req, res, next) => {
+  try {
+    const { category, tripstyle, budget } = req.query;
+    console.log("Category", category);
+    console.log("Trip Style", tripstyle);
+    console.log("Budget", budget);
+  } catch (error) {
+    console.log(error);
+    return next(new AppError("Explore Trips Error!", 404));
   }
 };
