@@ -1,3 +1,4 @@
+const IntrestedTrip = require("../models/IntrestedTripModel");
 const Trip = require("../models/tripModel");
 const AppError = require("../utils/AppError");
 
@@ -63,13 +64,17 @@ exports.exploreTrips = async (req, res, next) => {
     console.log("Trip Style", tripstyle);
     console.log("Budget", budget);
     const costInINR = Number(budget) * 92.58; // Convert USD to INR
-    const trips = await Trip.find({
+    const trips = await IntrestedTrip.find({
       $and: [
         { category: { $in: category } },
         { tripStyle: { $in: tripstyle } },
         { estimatedCost: { $lte: costInINR } },
       ],
     });
+
+    if (!trips) {
+      return next(new AppError("No Trips Found!", 404));
+    }
     res.status(200).json({
       status: "Success",
       message: "Explore Trips Successfully",
