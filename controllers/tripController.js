@@ -65,8 +65,8 @@ exports.exploreTrips = async (req, res, next) => {
     const costInINR = Number(budget) * 92.58; // Convert USD to INR
     const trips = await Trip.find({
       $and: [
-        { category: { $in: category.split(",") } },
-        { tripStyle: { $in: tripstyle.split(",") } },
+        { category: { $in: category } },
+        { tripStyle: { $in: tripstyle } },
         { estimatedCost: { $lte: costInINR } },
       ],
     });
