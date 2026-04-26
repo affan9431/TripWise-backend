@@ -12,7 +12,13 @@ exports.getFilterTrips = async (req, res, next) => {
       $and: [
         { estimatedCost: { $lte: Number(budget) } },
         { tripStyle: tripStyle },
-        { hotels: { $elemMatch: { maxMembersPerRoom: { $eq: groupSize } } } },
+        {
+          hotels: {
+            $elemMatch: {
+              otherRoomSize: { $elemMatch: { capacity: { $gte: groupSize } } },
+            },
+          },
+        },
       ],
     };
 
